@@ -1,0 +1,61 @@
+SMART TRANSLATOR - MANUAL SCREENSHOT INSTRUCTIONS
+==================================================
+
+Since the automatic screenshot generators aren't working, here's how to create the iPad screenshot manually:
+
+METHOD 1: RIGHT-CLICK SAVE
+--------------------------
+1. Go to: https://neal-wu.github.io/smart-translator-website/ipad-screenshot-static.html
+2. Right-click on the iPad image
+3. Select "Save image as..." or "Save picture as..."
+4. Save as: smart-translator-ipad-13-inch.png
+5. Upload to App Store Connect
+
+METHOD 2: SCREENSHOT TOOL
+-------------------------
+1. Open any of the screenshot pages in your browser
+2. Press Cmd+Shift+4 (Mac) or Print Screen (Windows)
+3. Select just the iPad area
+4. Save the image
+5. Upload to App Store Connect
+
+METHOD 3: BROWSER DEVELOPER TOOLS
+---------------------------------
+1. Press F12 to open developer tools
+2. Find the iPad element (look for .ipad-screen or .ipad-frame)
+3. Right-click on it and select "Screenshot element"
+4. Save the image
+5. Upload to App Store Connect
+
+REQUIRED SPECIFICATIONS:
+-----------------------
+- Dimensions: 2048x2732 pixels (13-inch iPad)
+- Format: PNG or JPEG
+- File size: Under 10MB
+- Content: Should show your app's translation interface
+
+UPLOAD TO APP STORE CONNECT:
+---------------------------
+1. Go to App Store Connect
+2. Navigate to your Smart Translator app
+3. Go to "Previews and Screenshots"
+4. Click "iPad" tab
+5. Select "13-inch iPad Display"
+6. Upload your screenshot
+
+ALSO REQUIRED:
+--------------
+1. Copyright Information: © 2025 Yuanjin Wu. All rights reserved.
+2. Privacy Policy URL: https://neal-wu.github.io/smart-translator-website/privacy-policy.html
+3. Support URL: https://neal-wu.github.io/smart-translator-website/support.html
+4. Select your build (ID: f1968038-3d70-46ce-a19a-fac4eeff1df9)
+
+ALTERNATIVE: USE ANY TRANSLATOR APP SCREENSHOT
+---------------------------------------------
+If you can't generate the screenshot, you can:
+1. Take a screenshot of any translator app on your iPad
+2. Crop it to 2048x2732 pixels
+3. Use that as a placeholder for now
+4. You can always update it later
+
+The most important thing is to get the app submitted for review! 

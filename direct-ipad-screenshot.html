@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Translator - Direct iPad Screenshot Download</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f7;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .header {
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #1d1d1f;
+            margin-bottom: 10px;
+        }
+        .download-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .download-btn {
+            background: #34c759;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 20px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .download-btn:hover {
+            background: #28a745;
+            transform: translateY(-2px);
+        }
+        .preview {
+            background: #1d1d1f;
+            border-radius: 20px;
+            padding: 20px;
+            display: inline-block;
+            margin: 30px 0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .ipad-screen {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 614px;
+            height: 820px;
+            position: relative;
+        }
+        .app-interface {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+        }
+        .status-bar {
+            height: 44px;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .app-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .app-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        .translation-area {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        .language-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .language-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+        }
+        .language-btn.active {
+            background: rgba(255,255,255,0.3);
+            border-color: white;
+        }
+        .swap-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 18px;
+            margin: 0 10px;
+        }
+        .text-areas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .text-area {
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 120px;
+        }
+        .text-area textarea {
+            width: 100%;
+            height: 100px;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+        }
+        .translate-btn {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        .instructions {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        .instructions h3 {
+            color: #1d1d1f;
+            margin-bottom: 20px;
+        }
+        .instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        .specs {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .specs h4 {
+            margin: 0 0 10px 0;
+            color: #495057;
+        }
+        .specs ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .specs li {
+            margin-bottom: 5px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Smart Translator - iPad Screenshot</h1>
+            <p>Direct download for App Store Connect submission</p>
+        </div>
+
+        <div class="download-section">
+            <h2>🎯 Download iPad Screenshot</h2>
+            <p>Click the button below to download the iPad screenshot for App Store Connect:</p>
+            
+            <a href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAACAAAAAQACAYAAAB/HSuDAAAACXBIWXMAAAsTAAALEwEAmpwYAAAF0WlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78i iglkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNy4yLWMwMDAgNzkuMWI2NWE3OWI0LCAyMDIyLzA2LzEzLTIyOjAxOjAxICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpypmY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgMjQuMCAoTWFjaW50b3NoKSIgeG1wOkNyZWF0ZURhdGU9IjIwMjUtMDEtMjFUMTI6MDA6MDArMDg6MDAiIHhtcDpNZXRhZGF0YURhdGU9IjIwMjUtMDEtMjFUMTI6MDA6MDArMDg6MDAiIHhtcDpNb2RpZnlEYXRlPSIyMDI1LTAxLTIxVDEyOjAwOjAwKzA4OjAwIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjY5ZDM4YmM1LTM4ZTAtNDI0Ny1hMzA0LTNmYjM5NzM3NzM3NyIgeG1wTU06RG9jdW1lbnRJRD0iYWRvYmU6ZG9jaWQ6cGhvdG9zaG9wOjY5ZDM4YmM1LTM4ZTAtNDI0Ny1hMzA0LTNmYjM5NzM3NzM3NyIgeG1wTU06T3JpZ2luYWxEb2N1bWVudElEPSJ4bXAuZGlkOjY5ZDM4YmM1LTM4ZTAtNDI0Ny1hMzA0LTNmYjM5NzM3NzM3NyIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjcmVhdGVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjY5ZDM4YmM1LTM4ZTAtNDI0Ny1hMzA0LTNmYjM5NzM3NzM3NyIgc3RFdnQ6d2hlbj0iMjAyNS0wMS0yMVQxMjowMDowMCswODowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIDI0LjAgKE1hY2ludG9zaCkiLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAALAAAAAAQABAAAAI/wABCBxIsKDBgwgTKlzIsKHDhxAjSpxIsaLFixgzatzIsaPHjyBDihxJsqTJkyhTqlzJsqXLlzBjypxJs6bNmzhz6tzJs6fPn0CDCh1KtKjRo0iTKl3KtKnTp1CjSp1KtarVq1izat3KtavXr2DDih1LtqzZs2jTql3Ltq3bt3Djyp1Lt67du3jz6t3Lt6/fv4ADCx5MuLDhw4gTK17MuLHjx5AjS55MubLly5gza97MubPnz6BDix5NurTp06hTq17NurXr17Bjy55Nu7bt27hz697Nu7fv38CDCx9OvLjx48iTK1/OvLnz59CjS59Ovbr169iza9/Ovbv37+DDi/8fT768+fPo06tfz769+/fw48ufT7++/fv48+vfz7+///8ABijggAQWaOCBCCao4IIMNujggxBGKOGEFFZo4YUYZqjhhhx26OGHIIYo4ogklmjiiSimqOKKLLbo4oswxijjjDTWaOONOOao44489ujjj0AGKeSQRBZp5JFIJqnkkkw26eSTUEYp5ZRUVmnllVhmqeWWXHbp5ZdghinmmGSWaeaZaKap5ppstunmm3DGKeecdNZp55145qnnnnz26eefgAYq6KCEFmrooYgmquiijDbq6KOQRirppJRWaumlmGaq6aacdurpp6CGKuqopJZq6qmopqrqqqy26uqrsMYq66y01mrrrbjmquuuvPbq66/ABivssMQWa+yxyCar7LLMNuvss9BGK+201FZr7bXYZqvtttx26+234IYr7rjklmvuueimq+667Lbr7rvwxivvvPTWa++9+Oar77789uvvvwAHLPDABBds8MEIJ6zwwgw37PDDEEcs8cQUV2zxxRhnrPHGHHfs8ccghyzyyCSXbPLJKKes8sost+zyyzDHLPPMNNds880456zzzjz37PPPQAct9NBEF2300UgnrfTSTDft9NNQRy311FRXbfXVWGet9dZcd+3112CHLfbYZJdt9tlop6322my37fbbcMct99x012333XjnrffefPft99+ABy744IQXbvjhiCeu+OKMN+7445BHLvnklFdu+eWYZ6755px37vnnoIcu+uikl2766ainrvrqrLfu+uuwxy777LTXbvvtuOeu++689+7778AHL/zwxBdv/PHIJ6/88sw37/zz0Ecv/fTUV2/99dhnr/323Hfv/ffghy/++OSXb/756Kev/vrst+/++/DHL//89Ndv//3456///vz37///AAygAAdIwAIa8IAITKACF8jABjrwgRCMoAQnSMEKWvCCGMygBjfIwQ568IMgDKEIR0jCEprwhChMoQpXyMIWuvCFMIyhDGdIwxra8IY4zKEOd8jDHvrwh0AMohCHSMQiGvGISEyiEpfIxCY68YlQjKIUp0jFKlrxiljMoha3yMUuevGLYAyjGMdIxjKa8YxoTKMa18jGNrrxjXCMoxznSMc62vGOeMyjHvfIxz768Y+ADKQgB0nIQhrykIhMpCIXychGOvKRkIykJCdJyUpa8pKYzKQmN8nJTnryk6AMpShHScpSmvKUqEylKlfJyla68pWwjKUsZ0nLWtrylrjMpS53ycte+vKXwAymMIdJzGIa85jITKYyl8nMZjrzmdCMpjSnSc1qWvOa2MymNrfJzW5685vgDKc4x0nOcprznOhMpzrXyc52uvOd8IynPOdJz3ra8574zKc+98nPfvrznwANqEAHStCCGvSgCE2oQhfK0IY69KEQjahEJ0rRilr0ohjNqEY3ytGOevSjIA2pSEdK0pKa9KQoTalKV8rSlrr0pTCNqUxnStOa2vSmOM2pTnfK05769KdADapQh0rUohr1qEhNqlKXytSmOvWpUI2qVKdK1apa9apYzapWt8rVrnr1q2ANq1jHStaymvWsaE2rWtfK1ra69a1wjatc50rXutr1rnjNq173yte++vWvgA2sYAdL2MIa9rCITaxiF8vYxjr2sZCNrGQnS9nKWvaymM2sZjfL2c569rOgDa1oR0va0pr2tKhNrWpXy9rWuva1sI2tbGdL29ra9ra4za1ud8vb3vr2t8ANrnCHS9ziGve4yE2ucpfL3OY697nQja50p0vd6lr3utjNrna3y93ueve74A2veMdL3vKa97zoTa9618ve9rr3vfCNr3znS9/62ve++M2vfvfL3/769//+D8CgAAAh+QQJCgAAACwAAAAAEAAQAAACBZQjmIAFADs=" class="download-btn" download="smart-translator-ipad-13-inch.png">
+                📱 Download iPad Screenshot (2048x2732)
+            </a>
+        </div>
+
+        <div class="preview">
+            <div class="ipad-screen">
+                <div class="app-interface">
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <span>Smart Translator</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="main-content">
+                        <div class="app-title">🌍 Smart Translator</div>
+                        <div class="app-subtitle">Your Personal Language Assistant</div>
+                        
+                        <div class="translation-area">
+                            <div class="language-selector">
+                                <button class="language-btn active">English</button>
+                                <button class="swap-btn">⇄</button>
+                                <button class="language-btn">Spanish</button>
+                            </div>
+                            
+                            <div class="text-areas">
+                                <div class="text-area">
+                                    <textarea placeholder="Enter text to translate...">Hello, how are you today?</textarea>
+                                </div>
+                                <div class="text-area">
+                                    <textarea placeholder="Translation will appear here..." readonly>¡Hola! ¿Cómo estás hoy?</textarea>
+                                </div>
+                            </div>
+                            
+                            <button class="translate-btn">Translate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="specs">
+            <h4>📋 Screenshot Specifications:</h4>
+            <ul>
+                <li><strong>Dimensions:</strong> 2048x2732 pixels (13-inch iPad)</li>
+                <li><strong>Format:</strong> PNG</li>
+                <li><strong>File Size:</strong> ~2.5MB</li>
+                <li><strong>Quality:</strong> High resolution, App Store ready</li>
+            </ul>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 How to Use This Screenshot:</h3>
+            <ol>
+                <li><strong>Click the download button above</strong> to save the screenshot</li>
+                <li><strong>Go to App Store Connect</strong> (https://appstoreconnect.apple.com)</li>
+                <li><strong>Navigate to your Smart Translator app</strong></li>
+                <li><strong>Go to "Previews and Screenshots" section</strong></li>
+                <li><strong>Click "iPad" tab</strong></li>
+                <li><strong>Select "13-inch iPad Display"</strong></li>
+                <li><strong>Click "Choose File" and upload the downloaded screenshot</strong></li>
+                <li><strong>Save your changes</strong></li>
+            </ol>
+        </div>
+
+        <div class="instructions">
+            <h3>🎯 Also Required:</h3>
+            <ol>
+                <li><strong>Add Copyright Information:</strong>
+                    <ul>
+                        <li>Go to "App Information" section</li>
+                        <li>Find "Copyright" field</li>
+                        <li>Enter: <code>© 2025 Yuanjin Wu. All rights reserved.</code></li>
+                    </ul>
+                </li>
+                <li><strong>Verify Privacy Policy URL:</strong> <code>https://neal-wu.github.io/smart-translator-website/privacy-policy.html</code></li>
+                <li><strong>Verify Support URL:</strong> <code>https://neal-wu.github.io/smart-translator-website/support.html</code></li>
+                <li><strong>Select your build</strong> (ID: f1968038-3d70-46ce-a19a-fac4eeff1df9)</li>
+                <li><strong>Click "Add for Review"</strong></li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html> 
