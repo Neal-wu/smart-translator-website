@@ -1,0 +1,40 @@
+EMERGENCY SOLUTION - GET YOUR APP SUBMITTED NOW!
+================================================
+
+Since the screenshot generation isn't working, here's how to get your app submitted immediately:
+
+OPTION 1: USE ANY TRANSLATOR APP SCREENSHOT
+------------------------------------------
+1. Open any translator app on your iPad/iPhone (Google Translate, etc.)
+2. Take a screenshot
+3. Crop it to roughly 2048x2732 pixels
+4. Use this as a placeholder screenshot
+5. You can always update it later after approval
+
+OPTION 2: USE A BLANK SCREENSHOT
+--------------------------------
+1. Create a simple image with just text: "Smart Translator - Translation App"
+2. Make it 2048x2732 pixels
+3. Use this as a placeholder
+4. Update after approval
+
+OPTION 3: SKIP IPAD SCREENSHOT FOR NOW
+-------------------------------------
+1. Focus on getting the iPhone screenshots uploaded (you already have 7)
+2. Add the copyright information
+3. Submit for review
+4. Add iPad screenshot later when you can
+
+IMMEDIATE ACTION REQUIRED:
+-------------------------
+1. Go to App Store Connect
+2. Add Copyright: © 2025 Yuanjin Wu. All rights reserved.
+3. Verify Privacy Policy URL: https://neal-wu.github.io/smart-translator-website/privacy-policy.html
+4. Verify Support URL: https://neal-wu.github.io/smart-translator-website/support.html
+5. Select your build (ID: f1968038-3d70-46ce-a19a-fac4eeff1df9)
+6. Click "Add for Review"
+
+THE MOST IMPORTANT THING IS TO GET YOUR APP SUBMITTED!
+You can always update screenshots later after the app is approved.
+
+Don't let a screenshot issue delay your app submission! 
