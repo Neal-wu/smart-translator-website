@@ -238,6 +238,7 @@
             </div>
             <button onclick="generateScreenshot()">Generate Screenshot</button>
             <button onclick="downloadAll()">Download All iPad Screenshots</button>
+            <button onclick="takeManualScreenshot()">Manual Screenshot Instructions</button>
         </div>
 
         <div class="preview-container">
@@ -369,22 +370,58 @@
             const sizeConfig = ipadSizes[currentSize];
             const element = document.getElementById('ipadScreen');
             
+            // Check if html2canvas is loaded
+            if (typeof html2canvas === 'undefined') {
+                alert('html2canvas library is not loaded. Please refresh the page and try again.');
+                return;
+            }
+            
+            // Show loading message
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Generating...';
+            button.disabled = true;
+            
             html2canvas(element, {
                 width: sizeConfig.width,
                 height: sizeConfig.height,
                 scale: 1,
                 useCORS: true,
-                allowTaint: true
+                allowTaint: true,
+                backgroundColor: '#ffffff'
             }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `smart-translator-ipad-${currentSize}-${scenario}.png`;
-                link.href = canvas.toDataURL();
-                link.click();
+                try {
+                    // Create download link
+                    const link = document.createElement('a');
+                    link.download = `smart-translator-ipad-${currentSize}-${scenario}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    
+                    // Trigger download
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Show success message
+                    alert('Screenshot generated successfully! Check your downloads folder.');
+                    
+                    // Show download section
+                    document.getElementById('downloadSection').style.display = 'block';
+                    const downloadLinks = document.getElementById('downloadLinks');
+                    downloadLinks.innerHTML += `<p><a href="${link.href}" download="${link.download}">Download ${link.download}</a></p>`;
+                    
+                } catch (error) {
+                    alert('Error generating screenshot: ' + error.message);
+                    console.error('Screenshot generation error:', error);
+                }
                 
-                // Show download section
-                document.getElementById('downloadSection').style.display = 'block';
-                const downloadLinks = document.getElementById('downloadLinks');
-                downloadLinks.innerHTML += `<p><a href="${link.href}" download="${link.download}">Download ${link.download}</a></p>`;
+                // Reset button
+                button.textContent = originalText;
+                button.disabled = false;
+            }).catch(error => {
+                alert('Error generating screenshot: ' + error.message);
+                console.error('html2canvas error:', error);
+                button.textContent = originalText;
+                button.disabled = false;
             });
         }
 
@@ -402,6 +439,33 @@
                     }, (scenarios.indexOf(scenario) * sizes.length + sizes.indexOf(size)) * 1000);
                 });
             });
+        }
+
+        function takeManualScreenshot() {
+            const instructions = `
+📱 MANUAL SCREENSHOT INSTRUCTIONS
+
+Since the automatic download isn't working, here's how to take a manual screenshot:
+
+1. RIGHT-CLICK on the iPad preview above
+2. Select "Save image as..." or "Save picture as..."
+3. Save the file as: smart-translator-ipad-13-inch.png
+4. Upload this file to App Store Connect
+
+ALTERNATIVE METHOD:
+1. Press PRINT SCREEN (or Cmd+Shift+4 on Mac)
+2. Crop the image to just the iPad preview
+3. Save as PNG file
+4. Upload to App Store Connect
+
+REQUIRED DIMENSIONS:
+- 13-inch iPad: 2048x2732 pixels
+- Format: PNG or JPEG
+- File size: Under 10MB
+
+The screenshot should show your app's main translation interface.
+            `;
+            alert(instructions);
         }
 
         // Initialize
