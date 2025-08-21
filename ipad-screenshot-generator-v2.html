@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Translator - iPad Screenshot Generator</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f7;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #1d1d1f;
+            margin-bottom: 10px;
+        }
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .control-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d2d2d7;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: 600;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .preview-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .ipad-sizes {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .size-btn {
+            background: #f2f2f7;
+            color: #1d1d1f;
+            border: 2px solid #d2d2d7;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .size-btn.active {
+            background: #007AFF;
+            color: white;
+            border-color: #007AFF;
+        }
+        .ipad-frame {
+            background: #1d1d1f;
+            border-radius: 20px;
+            padding: 20px;
+            display: inline-block;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            margin: 20px 0;
+        }
+        .ipad-screen {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .app-interface {
+            padding: 20px;
+            min-height: 600px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .status-bar {
+            height: 44px;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+        }
+        .main-content {
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+        }
+        .app-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .app-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        .translation-area {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        .language-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .language-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .language-btn.active {
+            background: rgba(255,255,255,0.3);
+            border-color: white;
+        }
+        .swap-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+        .text-areas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .text-area {
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 120px;
+        }
+        .text-area textarea {
+            width: 100%;
+            height: 100px;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+        }
+        .translate-btn {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        .download-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .download-btn {
+            background: #34c759;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        #canvas {
+            display: none;
+        }
+        .specs {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Smart Translator - iPad Screenshot Generator</h1>
+            <p>Generate iPad screenshots for App Store Connect submission</p>
+        </div>
+
+        <div class="controls">
+            <div>
+                <div class="control-group">
+                    <label for="scenario">Scenario:</label>
+                    <select id="scenario">
+                        <option value="main">Main Translation Interface</option>
+                        <option value="languages">Language Selection</option>
+                        <option value="translated">Translation Results</option>
+                        <option value="swap">Language Swap</option>
+                        <option value="settings">App Settings</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="ipadSize">iPad Size:</label>
+                    <select id="ipadSize">
+                        <option value="ipad-13-portrait">13-inch iPad Portrait (2048x2732)</option>
+                        <option value="ipad-13-landscape">13-inch iPad Landscape (2732x2048)</option>
+                        <option value="ipad-13-alt">13-inch iPad Alt Portrait (2064x2752)</option>
+                        <option value="ipad-13-alt-landscape">13-inch iPad Alt Landscape (2752x2064)</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button onclick="generateScreenshot()" id="generateBtn">Generate Screenshot</button>
+                <button onclick="downloadScreenshot()" id="downloadBtn" disabled>Download Screenshot</button>
+                <button onclick="downloadAll()">Download All iPad Screenshots</button>
+            </div>
+        </div>
+
+        <div id="status" class="status info" style="display: none;"></div>
+
+        <div class="preview-container">
+            <div class="ipad-sizes">
+                <button class="size-btn active" onclick="setSize('ipad-13-portrait')">13" Portrait</button>
+                <button class="size-btn" onclick="setSize('ipad-13-landscape')">13" Landscape</button>
+                <button class="size-btn" onclick="setSize('ipad-13-alt')">13" Alt Portrait</button>
+                <button class="size-btn" onclick="setSize('ipad-13-alt-landscape')">13" Alt Landscape</button>
+            </div>
+            
+            <div class="specs">
+                <strong>Current Size:</strong> <span id="currentSize">2048x2732</span> | 
+                <strong>Required by App Store:</strong> 13-inch iPad Display (2064x2752px, 2752x2064px, 2048x2732px)
+            </div>
+            
+            <div class="ipad-frame" id="ipadFrame">
+                <div class="ipad-screen" id="ipadScreen">
+                    <div class="app-interface" id="appInterface">
+                        <div class="status-bar">
+                            <span>9:41</span>
+                            <span>Smart Translator</span>
+                            <span>100%</span>
+                        </div>
+                        <div class="main-content">
+                            <div class="app-title" id="appTitle">🌍 Smart Translator</div>
+                            <div class="app-subtitle" id="appSubtitle">Your Personal Language Assistant</div>
+                            
+                            <div class="translation-area">
+                                <div class="language-selector">
+                                    <button class="language-btn active" id="lang1">English</button>
+                                    <button class="swap-btn" onclick="swapLanguages()">⇄</button>
+                                    <button class="language-btn" id="lang2">Spanish</button>
+                                </div>
+                                
+                                <div class="text-areas">
+                                    <div class="text-area">
+                                        <textarea id="inputText" placeholder="Enter text to translate...">Hello, how are you today?</textarea>
+                                    </div>
+                                    <div class="text-area">
+                                        <textarea id="outputText" placeholder="Translation will appear here..." readonly>¡Hola! ¿Cómo estás hoy?</textarea>
+                                    </div>
+                                </div>
+                                
+                                <button class="translate-btn">Translate</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="download-section" id="downloadSection" style="display: none;">
+            <h3>Generated Screenshots:</h3>
+            <div id="downloadLinks"></div>
+        </div>
+    </div>
+
+    <canvas id="canvas" width="2048" height="2732"></canvas>
+
+    <script>
+        const scenarios = {
+            main: {
+                title: "🌍 Smart Translator",
+                subtitle: "Your Personal Language Assistant",
+                inputText: "Hello, how are you today?",
+                outputText: "¡Hola! ¿Cómo estás hoy?",
+                lang1: "English",
+                lang2: "Spanish"
+            },
+            languages: {
+                title: "🌍 Smart Translator",
+                subtitle: "Select Your Languages",
+                inputText: "Choose your preferred languages",
+                outputText: "Selecciona tus idiomas preferidos",
+                lang1: "English",
+                lang2: "Spanish"
+            },
+            translated: {
+                title: "🌍 Smart Translator",
+                subtitle: "Translation Complete",
+                inputText: "I love learning new languages",
+                outputText: "Me encanta aprender nuevos idiomas",
+                lang1: "English",
+                lang2: "Spanish"
+            },
+            swap: {
+                title: "🌍 Smart Translator",
+                subtitle: "Easy Language Swap",
+                inputText: "Bonjour, comment allez-vous?",
+                outputText: "Hello, how are you?",
+                lang1: "French",
+                lang2: "English"
+            },
+            settings: {
+                title: "🌍 Smart Translator",
+                subtitle: "App Settings",
+                inputText: "Configure your translation preferences",
+                outputText: "Configura tus preferencias de traducción",
+                lang1: "English",
+                lang2: "Spanish"
+            }
+        };
+
+        const ipadSizes = {
+            'ipad-13-portrait': { width: 2048, height: 2732, scale: 0.25, display: '2048x2732' },
+            'ipad-13-landscape': { width: 2732, height: 2048, scale: 0.25, display: '2732x2048' },
+            'ipad-13-alt': { width: 2064, height: 2752, scale: 0.25, display: '2064x2752' },
+            'ipad-13-alt-landscape': { width: 2752, height: 2064, scale: 0.25, display: '2752x2064' }
+        };
+
+        let currentSize = 'ipad-13-portrait';
+        let screenshotDataUrl = null;
+
+        function showStatus(message, type = 'info') {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
+        }
+
+        function setSize(size) {
+            currentSize = size;
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const sizeConfig = ipadSizes[size];
+            const frame = document.getElementById('ipadFrame');
+            const screen = document.getElementById('ipadScreen');
+            
+            frame.style.width = (sizeConfig.width * sizeConfig.scale) + 'px';
+            frame.style.height = (sizeConfig.height * sizeConfig.scale) + 'px';
+            screen.style.width = (sizeConfig.width * sizeConfig.scale) + 'px';
+            screen.style.height = (sizeConfig.height * sizeConfig.scale) + 'px';
+            
+            document.getElementById('currentSize').textContent = sizeConfig.display;
+        }
+
+        function updateScenario() {
+            const scenario = document.getElementById('scenario').value;
+            const config = scenarios[scenario];
+            
+            document.getElementById('appTitle').textContent = config.title;
+            document.getElementById('appSubtitle').textContent = config.subtitle;
+            document.getElementById('inputText').value = config.inputText;
+            document.getElementById('outputText').value = config.outputText;
+            document.getElementById('lang1').textContent = config.lang1;
+            document.getElementById('lang2').textContent = config.lang2;
+        }
+
+        function swapLanguages() {
+            const lang1 = document.getElementById('lang1');
+            const lang2 = document.getElementById('lang2');
+            const temp = lang1.textContent;
+            lang1.textContent = lang2.textContent;
+            lang2.textContent = temp;
+        }
+
+        function generateScreenshot() {
+            const button = document.getElementById('generateBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            button.textContent = 'Generating...';
+            button.disabled = true;
+            
+            showStatus('Generating screenshot...', 'info');
+            
+            try {
+                const scenario = document.getElementById('scenario').value;
+                updateScenario();
+                
+                const sizeConfig = ipadSizes[currentSize];
+                const element = document.getElementById('ipadScreen');
+                
+                // Check if html2canvas is loaded
+                if (typeof html2canvas === 'undefined') {
+                    showStatus('html2canvas library is not loaded. Using fallback method.', 'info');
+                    generateFallbackScreenshot();
+                    return;
+                }
+                
+                html2canvas(element, {
+                    width: sizeConfig.width,
+                    height: sizeConfig.height,
+                    scale: 1,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff'
+                }).then(canvas => {
+                    try {
+                        screenshotDataUrl = canvas.toDataURL('image/png');
+                        
+                        showStatus('Screenshot generated successfully! Click "Download Screenshot" to save.', 'success');
+                        downloadBtn.disabled = false;
+                        button.textContent = 'Generate Screenshot';
+                        button.disabled = false;
+                        
+                        // Show download section
+                        document.getElementById('downloadSection').style.display = 'block';
+                        const downloadLinks = document.getElementById('downloadLinks');
+                        downloadLinks.innerHTML = `<p><strong>Ready to download:</strong> smart-translator-ipad-${currentSize}-${scenario}.png</p>`;
+                        
+                    } catch (error) {
+                        showStatus('Error generating screenshot: ' + error.message, 'error');
+                        button.textContent = 'Generate Screenshot';
+                        button.disabled = false;
+                    }
+                }).catch(error => {
+                    showStatus('Error generating screenshot: ' + error.message, 'error');
+                    button.textContent = 'Generate Screenshot';
+                    button.disabled = false;
+                });
+                
+            } catch (error) {
+                showStatus('Error generating screenshot: ' + error.message, 'error');
+                button.textContent = 'Generate Screenshot';
+                button.disabled = false;
+            }
+        }
+
+        function generateFallbackScreenshot() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const sizeConfig = ipadSizes[currentSize];
+            
+            canvas.width = sizeConfig.width;
+            canvas.height = sizeConfig.height;
+            
+            // Draw gradient background
+            const gradient = ctx.createLinearGradient(0, 0, sizeConfig.width, sizeConfig.height);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, sizeConfig.width, sizeConfig.height);
+            
+            // Draw status bar
+            ctx.fillStyle = 'rgba(255,255,255,0.1)';
+            ctx.fillRect(0, 0, sizeConfig.width, 44);
+            
+            // Draw text
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 4rem -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('🌍 Smart Translator', sizeConfig.width / 2, 400);
+            
+            ctx.font = '2rem -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.fillText('Your Personal Language Assistant', sizeConfig.width / 2, 500);
+            
+            // Draw translation area
+            ctx.fillStyle = 'rgba(255,255,255,0.1)';
+            ctx.fillRect(200, 600, sizeConfig.width - 400, 1200);
+            
+            // Draw language buttons
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.fillRect(400, 700, 300, 100);
+            ctx.fillRect(sizeConfig.width - 700, 700, 300, 100);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 2rem -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('English', 550, 760);
+            ctx.fillText('Spanish', sizeConfig.width - 550, 760);
+            
+            // Draw text areas
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
+            ctx.fillRect(400, 900, 600, 400);
+            ctx.fillRect(sizeConfig.width - 1000, 900, 600, 400);
+            
+            ctx.fillStyle = '#333';
+            ctx.font = '1.5rem -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('Hello, how are you today?', 420, 950);
+            ctx.fillText('¡Hola! ¿Cómo estás hoy?', sizeConfig.width - 980, 950);
+            
+            // Draw translate button
+            ctx.fillStyle = '#007AFF';
+            ctx.fillRect(sizeConfig.width / 2 - 200, 1400, 400, 100);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 2rem -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Translate', sizeConfig.width / 2, 1465);
+            
+            screenshotDataUrl = canvas.toDataURL('image/png');
+            showStatus('Screenshot generated successfully! Click "Download Screenshot" to save.', 'success');
+            document.getElementById('downloadBtn').disabled = false;
+            document.getElementById('generateBtn').textContent = 'Generate Screenshot';
+            document.getElementById('generateBtn').disabled = false;
+        }
+
+        function downloadScreenshot() {
+            if (screenshotDataUrl) {
+                const scenario = document.getElementById('scenario').value;
+                const link = document.createElement('a');
+                link.download = `smart-translator-ipad-${currentSize}-${scenario}.png`;
+                link.href = screenshotDataUrl;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showStatus('Screenshot downloaded successfully!', 'success');
+            } else {
+                showStatus('No screenshot generated yet. Please generate one first.', 'error');
+            }
+        }
+
+        function downloadAll() {
+            const scenarios = ['main', 'languages', 'translated', 'swap', 'settings'];
+            const sizes = ['ipad-13-portrait', 'ipad-13-landscape', 'ipad-13-alt', 'ipad-13-alt-landscape'];
+            
+            showStatus('Generating all screenshots... This may take a while.', 'info');
+            
+            scenarios.forEach((scenario, scenarioIndex) => {
+                sizes.forEach((size, sizeIndex) => {
+                    setTimeout(() => {
+                        document.getElementById('scenario').value = scenario;
+                        currentSize = size;
+                        updateScenario();
+                        generateScreenshot();
+                    }, (scenarioIndex * sizes.length + sizeIndex) * 2000);
+                });
+            });
+        }
+
+        // Initialize
+        document.getElementById('scenario').addEventListener('change', updateScenario);
+        updateScenario();
+        setSize('ipad-13-portrait');
+    </script>
+</body>
+</html> 
