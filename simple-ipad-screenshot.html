@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Translator - Simple iPad Screenshot</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f7;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .header {
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #1d1d1f;
+            margin-bottom: 10px;
+        }
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: 600;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .preview-container {
+            margin: 30px 0;
+        }
+        .ipad-frame {
+            background: #1d1d1f;
+            border-radius: 20px;
+            padding: 20px;
+            display: inline-block;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .ipad-screen {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 614px;
+            height: 820px;
+            position: relative;
+        }
+        .app-interface {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+        }
+        .status-bar {
+            height: 44px;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .app-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .app-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        .translation-area {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        .language-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .language-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+        }
+        .language-btn.active {
+            background: rgba(255,255,255,0.3);
+            border-color: white;
+        }
+        .swap-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 18px;
+            margin: 0 10px;
+        }
+        .text-areas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .text-area {
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 120px;
+        }
+        .text-area textarea {
+            width: 100%;
+            height: 100px;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+        }
+        .translate-btn {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        #canvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Smart Translator - Simple iPad Screenshot</h1>
+            <p>Generate iPad screenshots without external libraries</p>
+        </div>
+
+        <div class="controls">
+            <button onclick="generateScreenshot()" id="generateBtn">Generate iPad Screenshot</button>
+            <button onclick="downloadScreenshot()" id="downloadBtn" disabled>Download Screenshot</button>
+            <button onclick="showInstructions()">Show Instructions</button>
+        </div>
+
+        <div id="status" class="status info" style="display: none;"></div>
+
+        <div class="preview-container">
+            <div class="ipad-frame">
+                <div class="ipad-screen" id="ipadScreen">
+                    <div class="app-interface">
+                        <div class="status-bar">
+                            <span>9:41</span>
+                            <span>Smart Translator</span>
+                            <span>100%</span>
+                        </div>
+                        <div class="main-content">
+                            <div class="app-title">🌍 Smart Translator</div>
+                            <div class="app-subtitle">Your Personal Language Assistant</div>
+                            
+                            <div class="translation-area">
+                                <div class="language-selector">
+                                    <button class="language-btn active">English</button>
+                                    <button class="swap-btn">⇄</button>
+                                    <button class="language-btn">Spanish</button>
+                                </div>
+                                
+                                <div class="text-areas">
+                                    <div class="text-area">
+                                        <textarea placeholder="Enter text to translate...">Hello, how are you today?</textarea>
+                                    </div>
+                                    <div class="text-area">
+                                        <textarea placeholder="Translation will appear here..." readonly>¡Hola! ¿Cómo estás hoy?</textarea>
+                                    </div>
+                                </div>
+                                
+                                <button class="translate-btn">Translate</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <canvas id="canvas" width="2048" height="2732"></canvas>
+    </div>
+
+    <script>
+        let screenshotDataUrl = null;
+
+        function showStatus(message, type = 'info') {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
+        }
+
+        function generateScreenshot() {
+            const button = document.getElementById('generateBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            button.textContent = 'Generating...';
+            button.disabled = true;
+            
+            showStatus('Generating screenshot...', 'info');
+            
+            try {
+                // Create a canvas with the required iPad dimensions
+                const canvas = document.getElementById('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Set canvas size to iPad 13-inch dimensions
+                canvas.width = 2048;
+                canvas.height = 2732;
+                
+                // Create a temporary div to render the content
+                const tempDiv = document.createElement('div');
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.left = '-9999px';
+                tempDiv.style.top = '-9999px';
+                tempDiv.style.width = '2048px';
+                tempDiv.style.height = '2732px';
+                tempDiv.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                tempDiv.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                tempDiv.style.color = 'white';
+                tempDiv.style.padding = '40px';
+                tempDiv.style.boxSizing = 'border-box';
+                
+                // Add the content
+                tempDiv.innerHTML = `
+                    <div style="height: 44px; background: rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; font-size: 14px; margin-bottom: 40px;">
+                        <span>9:41</span>
+                        <span>Smart Translator</span>
+                        <span>100%</span>
+                    </div>
+                    
+                    <div style="text-align: center; padding: 40px 0;">
+                        <div style="font-size: 4rem; font-weight: 700; margin-bottom: 20px;">🌍 Smart Translator</div>
+                        <div style="font-size: 2rem; margin-bottom: 60px; opacity: 0.9;">Your Personal Language Assistant</div>
+                        
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 30px; padding: 60px; margin: 40px 0;">
+                            <div style="display: flex; justify-content: center; gap: 40px; margin-bottom: 60px;">
+                                <button style="background: rgba(255,255,255,0.3); color: white; border: 2px solid white; padding: 24px 48px; border-radius: 50px; font-size: 32px;">English</button>
+                                <button style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 20px; border-radius: 50%; font-size: 36px; margin: 0 20px;">⇄</button>
+                                <button style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); padding: 24px 48px; border-radius: 50px; font-size: 32px;">Spanish</button>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 40px 0;">
+                                <div style="background: rgba(255,255,255,0.9); border-radius: 20px; padding: 40px; min-height: 240px;">
+                                    <textarea style="width: 100%; height: 200px; border: none; background: transparent; font-size: 32px; resize: none; outline: none; color: #333;" placeholder="Enter text to translate...">Hello, how are you today?</textarea>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.9); border-radius: 20px; padding: 40px; min-height: 240px;">
+                                    <textarea style="width: 100%; height: 200px; border: none; background: transparent; font-size: 32px; resize: none; outline: none; color: #333;" readonly>¡Hola! ¿Cómo estás hoy?</textarea>
+                                </div>
+                            </div>
+                            
+                            <button style="background: #007AFF; color: white; border: none; padding: 30px 80px; border-radius: 50px; font-size: 36px; font-weight: 600; margin: 40px 0;">Translate</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(tempDiv);
+                
+                // Use html2canvas if available, otherwise create a simple version
+                if (typeof html2canvas !== 'undefined') {
+                    html2canvas(tempDiv, {
+                        width: 2048,
+                        height: 2732,
+                        scale: 1,
+                        useCORS: true,
+                        allowTaint: true,
+                        backgroundColor: '#667eea'
+                    }).then(canvas => {
+                        screenshotDataUrl = canvas.toDataURL('image/png');
+                        document.body.removeChild(tempDiv);
+                        
+                        showStatus('Screenshot generated successfully! Click "Download Screenshot" to save.', 'success');
+                        downloadBtn.disabled = false;
+                        button.textContent = 'Generate iPad Screenshot';
+                        button.disabled = false;
+                    }).catch(error => {
+                        document.body.removeChild(tempDiv);
+                        showStatus('Error generating screenshot: ' + error.message, 'error');
+                        button.textContent = 'Generate iPad Screenshot';
+                        button.disabled = false;
+                    });
+                } else {
+                    // Fallback: create a simple canvas-based screenshot
+                    ctx.fillStyle = '#667eea';
+                    ctx.fillRect(0, 0, 2048, 2732);
+                    
+                    // Draw gradient background
+                    const gradient = ctx.createLinearGradient(0, 0, 2048, 2732);
+                    gradient.addColorStop(0, '#667eea');
+                    gradient.addColorStop(1, '#764ba2');
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, 2048, 2732);
+                    
+                    // Draw status bar
+                    ctx.fillStyle = 'rgba(255,255,255,0.1)';
+                    ctx.fillRect(0, 0, 2048, 44);
+                    
+                    // Draw text
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 4rem -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('🌍 Smart Translator', 1024, 400);
+                    
+                    ctx.font = '2rem -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                    ctx.fillText('Your Personal Language Assistant', 1024, 500);
+                    
+                    // Draw translation area
+                    ctx.fillStyle = 'rgba(255,255,255,0.1)';
+                    ctx.fillRect(200, 600, 1648, 1200);
+                    
+                    // Draw language buttons
+                    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+                    ctx.fillRect(400, 700, 300, 100);
+                    ctx.fillRect(1348, 700, 300, 100);
+                    
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 2rem -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('English', 550, 760);
+                    ctx.fillText('Spanish', 1498, 760);
+                    
+                    // Draw text areas
+                    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                    ctx.fillRect(400, 900, 600, 400);
+                    ctx.fillRect(1048, 900, 600, 400);
+                    
+                    ctx.fillStyle = '#333';
+                    ctx.font = '1.5rem -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                    ctx.textAlign = 'left';
+                    ctx.fillText('Hello, how are you today?', 420, 950);
+                    ctx.fillText('¡Hola! ¿Cómo estás hoy?', 1068, 950);
+                    
+                    // Draw translate button
+                    ctx.fillStyle = '#007AFF';
+                    ctx.fillRect(700, 1400, 400, 100);
+                    
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 2rem -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Translate', 900, 1465);
+                    
+                    document.body.removeChild(tempDiv);
+                    
+                    screenshotDataUrl = canvas.toDataURL('image/png');
+                    showStatus('Screenshot generated successfully! Click "Download Screenshot" to save.', 'success');
+                    downloadBtn.disabled = false;
+                    button.textContent = 'Generate iPad Screenshot';
+                    button.disabled = false;
+                }
+                
+            } catch (error) {
+                showStatus('Error generating screenshot: ' + error.message, 'error');
+                button.textContent = 'Generate iPad Screenshot';
+                button.disabled = false;
+            }
+        }
+
+        function downloadScreenshot() {
+            if (screenshotDataUrl) {
+                const link = document.createElement('a');
+                link.download = 'smart-translator-ipad-13-inch.png';
+                link.href = screenshotDataUrl;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showStatus('Screenshot downloaded successfully!', 'success');
+            } else {
+                showStatus('No screenshot generated yet. Please generate one first.', 'error');
+            }
+        }
+
+        function showInstructions() {
+            const instructions = `
+📱 HOW TO USE THIS SCREENSHOT:
+
+1. Click "Generate iPad Screenshot" button
+2. Wait for the generation to complete
+3. Click "Download Screenshot" to save the file
+4. Upload to App Store Connect:
+   - Go to App Store Connect
+   - Navigate to "Previews and Screenshots"
+   - Click "iPad" tab
+   - Select "13-inch iPad Display"
+   - Upload the downloaded file
+
+REQUIRED SPECIFICATIONS:
+- Dimensions: 2048x2732 pixels
+- Format: PNG
+- File size: Under 10MB
+
+ALTERNATIVE METHOD:
+If this doesn't work, right-click on the iPad preview above and select "Save image as..."
+            `;
+            alert(instructions);
+        }
+
+        // Load html2canvas if available
+        function loadHtml2Canvas() {
+            const script = document.createElement('script');
+            script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
+            script.onload = function() {
+                showStatus('html2canvas loaded successfully!', 'success');
+            };
+            script.onerror = function() {
+                showStatus('html2canvas failed to load, using fallback method.', 'info');
+            };
+            document.head.appendChild(script);
+        }
+
+        // Load html2canvas when page loads
+        window.addEventListener('load', loadHtml2Canvas);
+    </script>
+</body>
+</html> 
