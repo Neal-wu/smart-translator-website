@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Translator - App Icon Generator</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:#f5f5f7; margin:0; padding:24px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .card { background:#fff; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+    .controls { display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:16px; }
+    label { font-weight:600; margin-bottom:6px; display:block; }
+    input[type="text"], input[type="color"], select { width:100%; padding:10px; border:1px solid #d2d2d7; border-radius:8px; font-size:14px; }
+    button { background:#007AFF; color:#fff; border:none; padding:12px 18px; border-radius:10px; cursor:pointer; font-weight:700; }
+    button.secondary { background:#34c759; }
+    .preview-wrap { display:flex; gap:24px; align-items:center; justify-content:center; margin-top:16px; flex-wrap:wrap; }
+    canvas { border-radius: 20%; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+    .hint { color:#666; font-size:14px; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Smart Translator - App Icon Generator</h1>
+      <p>Export a final 1024×1024 PNG icon (no transparency) for App Store submission.</p>
+      <div class="controls">
+        <div>
+          <label>Background</label>
+          <input type="color" id="bg" value="#007AFF" />
+        </div>
+        <div>
+          <label>Accent Gradient</label>
+          <select id="gradient">
+            <option value="none">None</option>
+            <option value="#667eea,#764ba2" selected>Purple Gradient</option>
+            <option value="#00c6ff,#0072ff">Blue Gradient</option>
+            <option value="#36d1dc,#5b86e5">Cyan/Blue</option>
+          </select>
+        </div>
+        <div>
+          <label>Glyph Text</label>
+          <input type="text" id="glyph" value="ST" maxlength="3" />
+        </div>
+        <div>
+          <label>Glyph Color</label>
+          <input type="color" id="glyphColor" value="#ffffff" />
+        </div>
+      </div>
+      <div class="controls">
+        <div>
+          <label>Glyph Style</label>
+          <select id="style">
+            <option value="bold" selected>Bold</option>
+            <option value="semibold">SemiBold</option>
+            <option value="rounded">Rounded</option>
+          </select>
+        </div>
+        <div>
+          <label>Corner Radius</label>
+          <select id="radius">
+            <option value="0.2" selected>iOS (20%)</option>
+            <option value="0.25">Rounded (25%)</option>
+            <option value="0.15">Subtle (15%)</option>
+          </select>
+        </div>
+        <div>
+          <label>Preview Size</label>
+          <select id="preview">
+            <option value="256">256</option>
+            <option value="512" selected>512</option>
+            <option value="768">768</option>
+          </select>
+        </div>
+        <div style="display:flex; align-items:flex-end; gap:12px;">
+          <button id="renderBtn">Render</button>
+          <button id="downloadBtn" class="secondary">Download 1024×1024 PNG</button>
+        </div>
+      </div>
+      <div class="preview-wrap">
+        <canvas id="previewCanvas" width="512" height="512"></canvas>
+      </div>
+      <p class="hint">After downloading, replace <code>TranslatorApp/assets/icon.png</code> with the exported file and rebuild.</p>
+    </div>
+  </div>
+
+  <script>
+    const previewCanvas = document.getElementById('previewCanvas');
+    const ctx = previewCanvas.getContext('2d');
+
+    function drawIcon(canvasSize) {
+      const bg = document.getElementById('bg').value;
+      const gradientSel = document.getElementById('gradient').value;
+      const glyph = document.getElementById('glyph').value || 'ST';
+      const glyphColor = document.getElementById('glyphColor').value;
+      const style = document.getElementById('style').value;
+      const radiusRatio = parseFloat(document.getElementById('radius').value);
+
+      const c = document.createElement('canvas');
+      c.width = c.height = canvasSize;
+      const cctx = c.getContext('2d');
+
+      // background (no transparency)
+      cctx.fillStyle = bg;
+      cctx.fillRect(0, 0, canvasSize, canvasSize);
+
+      // rounded mask
+      const r = canvasSize * radiusRatio;
+      cctx.save();
+      cctx.beginPath();
+      roundedRect(cctx, 0, 0, canvasSize, canvasSize, r);
+      cctx.clip();
+
+      // optional gradient overlay
+      if (gradientSel !== 'none') {
+        const [g1, g2] = gradientSel.split(',');
+        const grd = cctx.createLinearGradient(0, 0, canvasSize, canvasSize);
+        grd.addColorStop(0, g1);
+        grd.addColorStop(1, g2);
+        cctx.globalAlpha = 0.6;
+        cctx.fillStyle = grd;
+        cctx.fillRect(0, 0, canvasSize, canvasSize);
+        cctx.globalAlpha = 1;
+      }
+
+      // glyph
+      cctx.fillStyle = glyphColor;
+      let fontWeight = '900';
+      if (style === 'semibold') fontWeight = '600';
+      if (style === 'rounded') fontWeight = '800';
+      cctx.textAlign = 'center';
+      cctx.textBaseline = 'middle';
+      cctx.font = `${fontWeight} ${canvasSize * 0.45}px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`;
+      cctx.fillText(glyph.toUpperCase(), canvasSize / 2, canvasSize / 2 + canvasSize * 0.02);
+
+      cctx.restore();
+      return c;
+    }
+
+    function roundedRect(c, x, y, w, h, r) {
+      c.moveTo(x + r, y);
+      c.arcTo(x + w, y, x + w, y + h, r);
+      c.arcTo(x + w, y + h, x, y + h, r);
+      c.arcTo(x, y + h, x, y, r);
+      c.arcTo(x, y, x + w, y, r);
+      c.closePath();
+    }
+
+    function renderPreview() {
+      const size = parseInt(document.getElementById('preview').value, 10);
+      previewCanvas.width = size;
+      previewCanvas.height = size;
+      const icon = drawIcon(size);
+      ctx.clearRect(0, 0, size, size);
+      ctx.drawImage(icon, 0, 0);
+    }
+
+    function download1024() {
+      const icon = drawIcon(1024);
+      const link = document.createElement('a');
+      link.download = 'icon-1024.png';
+      link.href = icon.toDataURL('image/png');
+      link.click();
+    }
+
+    document.getElementById('renderBtn').addEventListener('click', renderPreview);
+    document.getElementById('downloadBtn').addEventListener('click', download1024);
+
+    // initial render
+    renderPreview();
+  </script>
+</body>
+</html> 
